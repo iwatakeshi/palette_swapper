@@ -115,13 +115,19 @@ function drawPalette() {
 }
 
 function paletteSetup() {
+    currentPalette = AnyPalette.uniqueColors(currentPalette);
     //this removes black, which is often included at the beginning of palettes for some reason
     if (skipFirstColor) {
         currentPalette = _.rest(currentPalette);
     }
     //pre-calculate the Lab color for each (rgb) color in the palette
     for (var i = 0; i < currentPalette.length; ++i) {
-        let swatch = d3.color(currentPalette[i].toString());
+        let colorString = currentPalette[i].toString();
+        //this is added to fix long floating point stuff,
+        //like "rgb(169.00000512599945, 59.00000028312206, 59.00000028312206)"
+        const re = /\.[0-9]+/g;
+        colorString = colorString.replaceAll(re, "")
+        let swatch = d3.color(colorString);
         currentPalette[i].d3color = swatch;
         currentPalette[i].lab = d3.lab(swatch);
     }
@@ -139,7 +145,7 @@ function loadPaletteFromFile() {
          'spl', 'soc', 'colors', 'theme', 'themepack',
          'css', 'scss', 'styl',
          'html', 'svg', 'js'
-    ];
+    ]; //I worry about supporting some of these.
     if (supportedByAnypalette.includes(_.last(file.name.split('.')))) {
         AnyPalette.loadPalette(file, function (error, palette) {
             if (palette) {
