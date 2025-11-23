@@ -134,11 +134,13 @@ function loadPaletteFromFile() {
     //this is pretty similar to drawImageFromFile, but with palettes
     let file = document.getElementById("uploadPalette").files[0];
     //only the file extension is checked; i.e., it might be a valid file but need renaming
-    let supportedByAnypalette = ['pal', 'gpl', 'txt', 'psppalette', 'hpl', 'cs', 'wpe'];
-    if (file.name.endsWith('ase')) {
-        alert("No ASE support yet, sorry.");
-    }
-    else if (supportedByAnypalette.includes(_.last(file.name.split('.')))) {
+    let supportedByAnypalette = ['pal', 'gpl', 'aco', 'ase',
+         'txt','psppalette', 'hpl', 'cs', 'wpe', 'sketchpalette',
+         'spl', 'soc', 'colors', 'theme', 'themepack',
+         'css', 'scss', 'styl',
+         'html', 'svg', 'js'
+    ];
+    if (supportedByAnypalette.includes(_.last(file.name.split('.')))) {
         AnyPalette.loadPalette(file, function (error, palette) {
             if (palette) {
                 currentPalette = palette;
