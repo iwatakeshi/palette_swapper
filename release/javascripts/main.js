@@ -179,6 +179,7 @@ function ditherHelper(img, startIdx, multiplier, error){
 }
 
 function swapColors() {
+    document.getElementById("loading").style.display = "block";
     let canvasA = document.getElementById('image_before');
     let canvasB = document.getElementById('image_after');
 	//we're always reading from the "before" image and writing to the "after" image
@@ -236,6 +237,7 @@ function swapColors() {
                 }
             }
         }
+        document.getElementById("loading").style.display = "none";
         let t1 = performance.now();
         console.log(`Time to swap colors of whole image: ${t1 - t0} ms`); //probably a lot
         ctx = canvasB.getContext('2d');
@@ -255,6 +257,7 @@ worker.onmessage = function (e) {
     nearestmemoa = e.data[1];
     //document.getElementsByClassName('loader')[0].setAttribute("style", "display: none");
     console.log("message received from worker");
+    document.getElementById("loading").style.display = "none";
 }
 
 window.onload = function () {
